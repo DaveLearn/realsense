@@ -310,9 +310,11 @@ class SingleRealsense(mp.Process):
 
             # report global time
             # https://github.com/IntelRealSense/librealsense/pull/3909
-            d = pipeline_profile.get_device().first_color_sensor()
-            d.set_option(rs.option.global_time_enabled, 1)
-
+            for s in pipeline_profile.get_device().sensors:
+                s_name = s.get_info(rs.camera_info.name)
+                if s_name == 'Stereo Module' or s_name == 'RGB Camera':
+                    s.set_option(rs.option.global_time_enabled, 1)
+            
             # setup advanced mode
             if self.advanced_mode_config is not None:
                 json_text = json.dumps(self.advanced_mode_config)
