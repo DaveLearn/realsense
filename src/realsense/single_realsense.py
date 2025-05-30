@@ -465,10 +465,15 @@ class SingleRealsense(mp.Process):
                             command[key] = value[i]
                         cmd = command["cmd"]
                         if cmd == Command.SET_COLOR_OPTION.value:
-                            sensor = pipeline_profile.get_device().first_color_sensor()
                             option = rs.option(command["option_enum"])
                             value = float(command["option_value"])
-                            sensor.set_option(option, value)
+                            for s in pipeline_profile.get_device().sensors:
+                                s_name = s.get_info(rs.camera_info.name)
+                                if s_name == 'Stereo Module' or s_name == 'RGB Camera':
+                                    s.set_option(option, value)
+
+                            # sensor = pipeline_profile.get_device().first_color_sensor()
+                            # sensor.set_option(option, value)
                             # print('auto', sensor.get_option(rs.option.enable_auto_exposure))
                             # print('exposure', sensor.get_option(rs.option.exposure))
                             # print('gain', sensor.get_option(rs.option.gain))
