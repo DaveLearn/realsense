@@ -469,7 +469,7 @@ class SingleRealsense(mp.Process):
                             value = float(command["option_value"])
                             for s in pipeline_profile.get_device().sensors:
                                 s_name = s.get_info(rs.camera_info.name)
-                                if s_name == 'Stereo Module' or s_name == 'RGB Camera':
+                                if s_name == 'RGB Camera':
                                     s.set_option(option, value)
 
                             # sensor = pipeline_profile.get_device().first_color_sensor()
